@@ -69,3 +69,57 @@ It supports slash commands, interactive buttons, background tasks, and MongoDB i
    ```bash
    python main.py
    ```
+
+
+## Adding Commands and Tasks
+
+### Commands
+
+- Add your slash commands as Python files inside the `src/bot/commands` directory.
+- Use the `@register_command` decorator from `src.core.Decorators.RegisterCommand` on your command coroutine functions.
+- Each command should use `@app_commands.command()` from `discord` to define its name and description.
+
+**Example:**
+
+```python
+from discord import app_commands, Interaction, Embed
+from src.core.Decorators.RegisterCommand import register_command
+
+@register_command
+@app_commands.command(name="hello", description="Say hello")
+async def hello(interaction: Interaction):
+    await interaction.response.defer(thinking=True)
+    await interaction.followup.send(
+        embed=Embed(
+            title="Hello",
+            description="Hi There"
+        )
+    )
+```
+
+### Tasks
+
+- Add your background tasks as Python files inside the `src/bot/events` directory.
+- Use the `@register_task` decorator from `src.core.Decorators.RegisterTask` on your discord.ext.tasks.loop functions.
+- Tasks will automatically start when the bot is ready.
+
+**Example:**
+
+```python
+import datetime
+from discord.ext import tasks
+from src.core.Decorators.RegisterTask import register_task
+from src.Bot import bot
+
+@register_task
+@tasks.loop(time=datetime.time(hour=12, minute=0))
+async def daily_task():
+    embed = Embed(
+        title="Update!",
+        description="This is the daily update!",
+        color=0x5865F2
+    )
+    channel = bot.get_channel(YOUR_CHANNEL_ID)
+    if channel:
+        await channel.send(embed=embed)
+```
