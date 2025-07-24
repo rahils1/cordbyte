@@ -21,7 +21,7 @@ Notes:
 - You can create a .env file with these entries like:
 
     BOT_TOKEN=your_discord_bot_token_here
-    MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net
+    MONGODB_URI=your_mongodb_uri_here
     DB_NAME=your_database_name
 
 - The python-dotenv package must be installed (`pip install python-dotenv`).
